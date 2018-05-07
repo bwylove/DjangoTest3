@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,redirect
+from django.http import HttpResponse,HttpResponseRedirect
 # Create your views here.
 def index(request):
     return HttpResponse('hello world')
@@ -52,3 +52,36 @@ def postTest2(resquest):
     uhobby=resquest.POST.getlist('uhobby')
     context={'uname':uname,'upwd':upwd,'ugender':ugender,'uhobby':uhobby}
     return render(resquest,'booktest/postTest2.html',context)
+
+# cookie練習
+def cookieTest(request):
+    response=HttpResponse()
+    # response.set_cookie('t1','abc')
+    cookie=request.COOKIES
+    if cookie.has_key('t1'):
+        response.write(cookie['t1'])
+    return response
+
+# 转向练习
+def redTest1(request):
+    # return HttpResponseRedirect('/booktest/redTest2/')
+    return redirect('/booktest/redTest2/')
+def redTest2(request):
+    return HttpResponse('这是转向的来的页面')
+
+# 通过用户登陆推出练习session
+def session1(request):
+    uname=request.session.get('myname','未登陆')
+    context={'uname':uname}
+    return render(request,'booktest/session1.html',context)
+
+def session2(request):
+    return render(request,'booktest/session2.html')
+def session2_handle(request):
+    uname=request.POST['uname']
+    request.session['myname']=uname
+    # request.session.set_expiry(0)
+    return redirect('/booktest/session1/')
+def session3(request):
+    del request.session['myname']
+    return redirect('/booktest/session1')
