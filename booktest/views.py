@@ -40,3 +40,15 @@ def getTest3(request):
     a1=request.GET.getlist('a')
     context={'a':a1}
     return render(request,'booktest/getTest3.html',context)
+
+
+def postTest1(resquest):
+    return render(resquest,'booktest/postTest1.html')
+
+def postTest2(resquest):
+    uname=resquest.POST['uname']
+    upwd=resquest.POST['upwd']
+    ugender=resquest.POST['ugender']
+    uhobby=resquest.POST.getlist('uhobby')
+    context={'uname':uname,'upwd':upwd,'ugender':ugender,'uhobby':uhobby}
+    return render(resquest,'booktest/postTest2.html',context)
